@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Dashboard Analytics",
+    "description": "Dashboard responsive (React + Chart.js) avec auth et mode sombre.",
+    "tags": ["React", "Node", "JWT"],
+    "demo": "https://ton-domaine-ou-pages/demo1",
+    "repo": "https://github.com/<ton-user>/dashboard-analytics"
+  },
+  {
+    "name": "API REST Articles",
+    "description": "API Node/Express + tests Jest, déployée sur Render.",
+    "tags": ["Node", "Express", "REST"],
+    "demo": "https://ton-domaine-ou-pages/demo2",
+    "repo": "https://github.com/<ton-user>/api-articles"
+  }
+]
