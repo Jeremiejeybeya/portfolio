@@ -1,54 +1,97 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Portfolio – Jeremie Beya</title>
-  <meta name="description" content="Développeur web — projets, compétences, contact." />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <header class="container">
-    <nav class="nav">
-      <a href="#projets">Projets</a>
-      <a href="#skills">Compétences</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <div class="hero">
-      <img class="avatar" src="images/pic.JPG" alt="Avatar" />
-      <h1>Salut, je suis <span class="accent">Jeremie Beya</span> 👋</h1>
-      <p>Développeur web — Front/Back. J’aime construire des apps rapides et propres.</p>
-      <div class="links">
-        <a class="btn" href="https://github.com/<ton-user>" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn secondary" href="mailto:beyajeremy@gmail.com">Me contacter</a>
-      </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio – Jérémie Jeybeya</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="brand">
+          <img class="avatar" src="https://avatars.githubusercontent.com/u/9919?s=80&v=4" alt="Avatar" />
+          <div>
+            <div class="title">Jérémie Jeybeya</div>
+            <span class="tag">Développeur & Chef de projet junior</span>
+          </div>
+        </div>
+        <nav>
+          <a href="#about">À propos</a>
+          <a href="#skills">Compétences</a>
+          <a href="#projects">Projets</a>
+          <a href="#contact">Contact</a>
+          <a href="CV.pdf" target="_blank">Mon CV</a>
+        </nav>
+      </header>
+
+      <section class="hero card">
+        <div class="card-inner">
+          <h1>J'aide les équipes à livrer vite des produits de qualité.</h1>
+          <p>
+            Spécialisé en <strong>JavaScript/TypeScript</strong>, intégration API et
+            gestion de projet (Scrum, Kanban). Mon objectif : comprendre le besoin,
+            prioriser la valeur, et livrer en continu.
+          </p>
+          <div class="badges">
+            <span class="badge">#Web</span>
+            <span class="badge">#API</span>
+            <span class="badge">#Automatisation</span>
+            <span class="badge">#Gestion de projet</span>
+          </div>
+          <div class="cta">
+            <a class="btn primary" href="#projects">Voir mes projets</a>
+            <a class="btn" href="#contact">Discuter d'un projet</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="grid">
+        <div class="span-8 card">
+          <div class="card-inner">
+            <h2 class="section-title">À propos</h2>
+            <p>
+              Je conçois, code et organise. En tant que développeur et chef de projet
+              junior, j'aime transformer une idée en backlog clair, itérer rapidement
+              et mesurer l'impact.
+            </p>
+          </div>
+        </div>
+        <div id="skills" class="span-4 card">
+          <div class="card-inner">
+            <h2 class="section-title">Compétences clés</h2>
+            <ul>
+              <li>Front : HTML, CSS, JS/TS, React</li>
+              <li>Back : Node, REST, Express</li>
+              <li>Outils : Git, GitHub, CI/CD</li>
+              <li>Gestion : user stories, Kanban, reporting</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="card">
+        <div class="card-inner">
+          <h2 class="section-title">Projets</h2>
+          <div id="projectsGrid" class="projects"></div>
+        </div>
+      </section>
+
+      <section id="contact" class="card">
+        <div class="card-inner">
+          <h2 class="section-title">Contact</h2>
+          <div class="socials">
+            <a href="mailto:jeremiejeybeya@email.com">Email</a>
+            <a href="https://github.com/Jeremiejeybeya" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/jeremiejeybeya/" target="_blank">LinkedIn</a>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <span>© <span id="year"></span> • Fait avec ❤️ & GitHub Pages</span>
+      </footer>
     </div>
-  </header>
-
-  <main class="container">
-    <section id="projets">
-      <h2>Projets récents</h2>
-      <div id="projects-grid" class="grid"></div>
-    </section>
-
-    <section id="skills">
-      <h2>Compétences</h2>
-      <ul class="chips">
-        <li>HTML/CSS</li><li>JavaScript</li><li>React</li><li>Node.js</li>
-        <li>Express</li><li>MongoDB</li><li>SQL</li><li>Git/GitHub</li>
-      </ul>
-    </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Discutons de votre projet : <a href="mailto:beyajeremy@gmail.com">beyajeremy@gmail.com</a></p>
-    </section>
-  </main>
-
-  <footer class="container footer">
-    <small>© <span id="year"></span> Ton Nom. Tous droits réservés.</small>
-  </footer>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

@@ -1,93 +1,97 @@
-// ====== CONFIG ======
-const GITHUB_USER = "Jeremiejeybeya"; // <-- mets ton pseudo si différent
-const AUTO_LIMIT = 6;                 // nb de projets auto (en plus des vitrines)
+'use strict';
 
-// ====== UI ======
-document.getElementById("year").textContent = new Date().getFullYear();
+// ===== CONFIG À PERSONNALISER =====
+const CONFIG = {
+  githubUser: 'YOUR_GITHUB_USERNAME', // ← remplace par ton pseudo GitHub
+  featured: [
+    // Projets "mis en avant" (manuels)
+    {
+      name: 'Projet vitrine',
+      description: 'Site vitrine responsive pour une association. HTML/CSS/JS. Délais: 2 semaines.',
+      url: '#',
+      tags: ['HTML', 'CSS', 'JS']
+    },
+    {
+      name: 'API Node + CI',
+      description: 'API Express, tests, et déploiement automatisé via GitHub Actions.',
+      url: '#',
+      tags: ['Node', 'Express', 'CI/CD']
+    }
+  ]
+};
 
-function projectCard(p) {
-  const tags = (p.tags ?? []).map(t => `<span class="badge">${t}</span>`).join("");
-  const image = p.image
-    ? `<div class="card-cover"><img src="${p.image}" alt="${p.name} cover" loading="lazy"/></div>`
-    : "";
-  const demoBtn = p.demo ? `<a class="btn secondary" href="${p.demo}" target="_blank" rel="noopener">Demo</a>` : "";
-  const codeBtn = `<a class="btn" href="${p.repo}" target="_blank" rel="noopener">Code</a>`;
+// ===== UTILITAIRES =====
+const $ = (sel, ctx=document) => ctx.querySelector(sel);
+const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+function debounce(fn, wait=200){
+  let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), wait); };
+}
 
+// ===== RENDU PROJETS =====
+function projectCard(p){
+  const tagsHtml = (p.tags||[]).map(t=>`<span class="p-tag">${t}</span>`).join('');
+  const metaHtml = p.stars!=null ? `<div class="p-meta"><span>★ ${p.stars}</span><span>MAJ: ${p.updated||''}</span></div>` : '';
   return `
-    <article class="card">
-      ${image}
-      <div class="card-body">
-        <h3>${p.name}</h3>
-        <p>${p.description ?? "Aucune description"}</p>
-        <div class="meta">${tags}</div>
-        <div class="actions">${demoBtn}${codeBtn}</div>
-      </div>
-    </article>
-  `;
+    <article class="p-card">
+      <h3><a href="${p.url}" target="_blank" rel="noopener">${p.name}</a></h3>
+      <p class="p-desc">${p.description||''}</p>
+      <div class="p-tags">${tagsHtml}</div>
+      ${metaHtml}
+    </article>`;
 }
 
-// ====== DATA LOADERS ======
-async function loadManualProjects() {
-  try {
-    const res = await fetch("projects.json", { cache: "no-store" });
-    if (!res.ok) return [];
-    return await res.json();
-  } catch {
-    return [];
+function renderProjects(list){
+  const grid = $('#projectsGrid');
+  grid.innerHTML = list.map(projectCard).join('');
+}
+
+// ===== RÉCUP DEPUI S GITHUB (repos récents) =====
+async function fetchRecentRepos(user){
+  if(!user) return [];
+  const url = `https://api.github.com/users/${encodeURIComponent(user)}/repos?sort=updated&per_page=9`;
+  const r = await fetch(url);
+  if(!r.ok) return [];
+  const data = await r.json();
+  return data.map(repo=>({
+    name: repo.name,
+    description: repo.description,
+    url: repo.homepage || repo.html_url,
+    tags: (repo.language ? [repo.language] : []),
+    stars: repo.stargazers_count,
+    updated: new Date(repo.updated_at).toLocaleDateString()
+  }));
+}
+
+// ===== MAIN =====
+(async function init(){
+  // Année footer
+  const yearEl = $('#year');
+  if(yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // Données
+  const featured = CONFIG.featured || [];
+  const recent = await fetchRecentRepos(CONFIG.githubUser);
+  let all = [...featured, ...recent];
+
+  // Recherche temps réel
+  const search = $('#search');
+  if(search){
+    const apply = ()=>{
+      const q = search.value.toLowerCase().trim();
+      const filtered = !q ? all : all.filter(p=>
+        (p.name||'').toLowerCase().includes(q) ||
+        (p.description||'').toLowerCase().includes(q) ||
+        (p.tags||[]).join(' ').toLowerCase().includes(q)
+      );
+      renderProjects(filtered);
+    };
+    search.addEventListener('input', debounce(apply, 150));
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === '/' && document.activeElement !== search){
+        e.preventDefault(); search.focus();
+      }
+    });
   }
-}
 
-async function loadGithubRepos(username, limit = 6) {
-  try {
-    const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`);
-    const repos = await res.json();
-    if (!Array.isArray(repos)) return [];
-
-    return repos
-      .filter(r => !r.fork && !r.archived) // on garde les vrais repos actifs
-      .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))
-      .slice(0, limit)
-      .map(r => ({
-        name: r.name,
-        description: r.description || "Aucune description",
-        // Topics si dispo, sinon langage principal en tag
-        tags: (Array.isArray(r.topics) && r.topics.length) ? r.topics : (r.language ? [r.language] : []),
-        demo: r.homepage && r.homepage.trim() ? r.homepage : null, // mets l’URL dans About > Website
-        repo: r.html_url
-        // pas d'image côté GitHub API par défaut (tu peux en mettre via projects.json pour les vitrines)
-      }));
-  } catch (e) {
-    console.error(e);
-    return [];
-  }
-}
-
-function dedupeByRepo(projects) {
-  const seen = new Set();
-  return projects.filter(p => {
-    const key = (p.repo || p.name).toLowerCase();
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-}
-
-// ====== BOOT ======
-async function loadProjects() {
-  const grid = document.getElementById("projects-grid");
-  grid.innerHTML = "<p>Chargement des projets…</p>";
-
-  const [manual, auto] = await Promise.all([
-    loadManualProjects(),
-    loadGithubRepos(GITHUB_USER, AUTO_LIMIT)
-  ]);
-
-  // vitrines d'abord, puis auto, sans doublons
-  const merged = dedupeByRepo([...manual, ...auto]);
-
-  grid.innerHTML = merged.length
-    ? merged.map(projectCard).join("")
-    : "<p>Aucun projet pour le moment.</p>";
-}
-
-loadProjects();
+  renderProjects(all);
+})();
