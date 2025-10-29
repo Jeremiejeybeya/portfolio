@@ -2,7 +2,7 @@
 
 // ===== CONFIG À PERSONNALISER =====
 const CONFIG = {
-  githubUser: 'YOUR_GITHUB_USERNAME', // ← remplace par ton pseudo GitHub
+  githubUser: 'jey2020', // ← remplace par ton pseudo GitHub
   featured: [
     // Projets "mis en avant" (manuels)
     {

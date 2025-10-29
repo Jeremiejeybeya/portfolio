@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Portfolio – Jeremie Beya</title>
+  <meta name="description" content="Développeur web — projets, compétences, contact." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="container">
+    <nav class="nav">
+      <a href="#projets">Projets</a>
+      <a href="#skills">Compétences</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="hero">
+      <img class="avatar" src="images/pic.JPG" alt="Avatar" />
+      <h1>Salut, je suis <span class="accent">Jeremie Beya</span> 👋</h1>
+      <p>Développeur web — Front/Back. J’aime construire des apps rapides et propres.</p>
+      <div class="links">
+        <a class="btn" href="https://github.com/<ton-user>" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn secondary" href="mailto:beyajeremy@gmail.com">Me contacter</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="projets">
+      <h2>Projets récents</h2>
+      <div id="projects-grid" class="grid"></div>
+    </section>
+
+    <section id="skills">
+      <h2>Compétences</h2>
+      <ul class="chips">
+        <li>HTML/CSS</li><li>JavaScript</li><li>React</li><li>Node.js</li>
+        <li>Express</li><li>MongoDB</li><li>SQL</li><li>Git/GitHub</li>
+      </ul>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Discutons de votre projet : <a href="mailto:beyajeremy@gmail.com">beyajeremy@gmail.com</a></p>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <small>© <span id="year"></span> Ton Nom. Tous droits réservés.</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
